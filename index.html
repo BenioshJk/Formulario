@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hamburguesa vs Papas Fritas</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="800" height="600"></canvas>
+    <script>
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
+
+        const ANCHO = canvas.width;
+        const ALTO = canvas.height;
+
+        class Hamburguesa {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.width = 100; // Ancho de la hamburguesa
+                this.height = 60; // Alto de la hamburguesa
+                this.imagen = new Image();
+                this.imagen.src = 'hamburguesa.png'; // Cambia 'hamburguesa.png' por el nombre de tu imagen
+            }
+
+            dibujar() {
+                ctx.drawImage(this.imagen, this.x, this.y, this.width, this.height);
+            }
+
+            mover(dx, dy, laberinto) {
+                let nuevaX = this.x + dx;
+                let nuevaY = this.y + dy;
+
+                if (!this.colisionaConParedes(nuevaX, nuevaY, laberinto)) {
+                    this.x = nuevaX;
+                    this.y = nuevaY;
+                }
+            }
+
+            colisionaCon(papa) {
+                return (
+                    this.x < papa.x + papa.width &&
+                    this.x + this.width > papa.x &&
+                    this.y < papa.y + papa.height &&
+                    this.y + this.height > papa.y
+                );
+            }
+
+            colisionaConPowerUp(powerup) {
+                return (
+                    this.x < powerup.x + powerup.width &&
+                    this.x + this.width > powerup.x &&
+                    this.y < powerup.y + powerup.height &&
+                    this.y + this.height > powerup.y
+                );
+            }
+
+            colisionaConParedes(nuevaX, nuevaY, laberinto) {
+                for (const pared of laberinto) {
+                    if (nuevaX < pared.x + pared.width &&
+                        nuevaX + this.width > pared.x &&
+                        nuevaY < pared.y + pared.height &&
+                        nuevaY + this.height > pared.y) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
+
+        class PapaFrita {
+            constructor() {
+                this.x = Math.random() * (ANCHO - 15);
+                this.y = Math.random() * (ALTO - 30);
+                this.width = 15; // Ancho de la papa frita
+                this.height = 30; // Alto de la papa frita
+                this.visible = true;
+            }
+
+            dibujar() {
+                if (this.visible) {
+                    ctx.fillStyle = "yellow";
+                    ctx.fillRect(this.x, this.y, this.width, this.height);
+                }
+            }
+
+            mover(hamburguesa) {
+                if (this.visible) {
+                    // Movimiento hacia la hamburguesa
+                    if (this.x < hamburguesa.x) this.x += 1;  // Cambiar a velocidad más baja
+                    else if (this.x > hamburguesa.x) this.x -= 1;
+
+                    if (this.y < hamburguesa.y) this.y += 1;  // Cambiar a velocidad más baja
+                    else if (this.y > hamburguesa.y) this.y -= 1;
+                }
+            }
+        }
+
+        class PowerUp {
+            constructor() {
+                this.x = Math.random() * (ANCHO - 20) + 50;
+                this.y = Math.random() * (ALTO - 20) + 50;
+                this.width = 20;
+                this.height = 20;
+                this.active = true;
+            }
+
+            dibujar() {
+                if (this.active) {
+                    ctx.fillStyle = "red";
+                    ctx.fillRect(this.x, this.y, this.width, this.height);
+                }
+            }
+        }
+
+        class Rectangulo {
+            constructor(x, y, width, height) {
+                this.x = x;
+                this.y = y;
+                this.width = width;
+                this.height = height;
+            }
+        }
+
+        const hamburguesa = new Hamburguesa(ANCHO / 2 - 50, ALTO / 2 - 30); // Centrar la hamburguesa
+        const papas = Array.from({ length: 5 }, () => new PapaFrita());
+        const powerup = new PowerUp();
+        const laberinto = crearLaberinto();
+
+        function crearLaberinto() {
+            return [
+                new Rectangulo(100, 100, 600, 20),
+                new Rectangulo(100, 200, 20, 300),
+                new Rectangulo(680, 100, 20, 300),
+                new Rectangulo(300, 400, 200, 20),
+                new Rectangulo(300, 200, 200, 20),
+                new Rectangulo(300, 100, 100, 70),
+                // Asegúrate de que el spawn de la hamburguesa no choque con las paredes
+            ];
+        }
+
+        let juegoActivo = true;
+        const keysPressed = {}; // Objeto para almacenar las teclas presionadas
+
+        function actualizar() {
+            if (juegoActivo) {
+                // Movimiento basado en las teclas presionadas
+                if (keysPressed["ArrowLeft"]) {
+                    hamburguesa.mover(-5, 0, laberinto);
+                }
+                if (keysPressed["ArrowRight"]) {
+                    hamburguesa.mover(5, 0, laberinto);
+                }
+                if (keysPressed["ArrowUp"]) {
+                    hamburguesa.mover(0, -5, laberinto);
+                }
+                if (keysPressed["ArrowDown"]) {
+                    hamburguesa.mover(0, 5, laberinto);
+                }
+
+                for (const papa of papas) {
+                    papa.mover(hamburguesa);
+                }
+
+                for (const papa of papas) {
+                    if (hamburguesa.colisionaCon(papa)) {
+                        // Solo se considera colisión si la papa está visible
+                        if (papa.visible) {
+                            juegoActivo = false;
+                            alert("¡Perdiste!");
+                            document.location.reload(); // Reiniciar el juego
+                            break; // Salir del bucle después de perder
+                        }
+                    }
+                }
+
+                if (powerup.active && hamburguesa.colisionaConPowerUp(powerup)) {
+                    powerup.active = false;
+                    for (const papa of papas) {
+                        papa.visible = false;
+                    }
+                    setTimeout(() => {
+                        for (const papa of papas) {
+                            papa.visible = true;
+                        }
+                    }, 3000); // Reaparecer las papas después de 3 segundos
+                }
+            }
+        }
+
+        function dibujar() {
+            ctx.clearRect(0, 0, ANCHO, ALTO);
+            hamburguesa.dibujar();
+            for (const papa of papas) {
+                papa.dibujar();
+            }
+            powerup.dibujar();
+            dibujarLaberinto();
+        }
+
+        function dibujarLaberinto() {
+            ctx.fillStyle = "blue";
+            for (const pared of laberinto) {
+                ctx.fillRect(pared.x, pared.y, pared.width, pared.height);
+            }
+        }
+
+        function loop() {
+            actualizar();
+            dibujar();
+            requestAnimationFrame(loop);
+        }
+
+        window.addEventListener("keydown", (event) => {
+            keysPressed[event.key] = true; // Marcar la tecla como presionada
+        });
+
+        window.addEventListener("keyup", (event) => {
+            keysPressed[event.key] = false; // Marcar la tecla como no presionada
+        });
+
+        canvas.addEventListener("touchstart", (event) => {
+            const touchX = event.touches[0].clientX - canvas.offsetLeft;
+            const touchY = event.touches[0].clientY - canvas.offsetTop;
+
+            const dx = touchX - (hamburguesa.x + hamburguesa.width / 2);
+            const dy = touchY - (hamburguesa.y + hamburguesa.height / 2);
+            const angle = Math.atan2(dy, dx);
+            hamburguesa.mover(Math.cos(angle) * 5, Math.sin(angle) * 5, laberinto);
+        });
+
+        loop();
+    </script>
+</body>
+</html>

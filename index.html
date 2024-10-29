@@ -26,9 +26,10 @@
         }
 
         #canvas {
-            width: 100%;
-            height: calc(100vh - 120px); /* Espacio para controles */
+            width: 90vw;
+            height: 60vh; /* Espacio para controles */
             background-color: #ffffff;
+            border: 2px solid #000;
         }
 
         /* Controles táctiles */
@@ -42,8 +43,8 @@
         }
 
         .button {
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             background-color: #444;
             color: white;
             font-size: 24px;
@@ -73,8 +74,8 @@
 
         // Ajustar el tamaño del canvas al tamaño de la pantalla disponible
         function ajustarCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight - 120;  // Restamos el espacio para los controles
+            canvas.width = window.innerWidth * 0.9;
+            canvas.height = window.innerHeight * 0.6;
         }
         ajustarCanvas();
         window.addEventListener('resize', ajustarCanvas);
@@ -83,8 +84,8 @@
             constructor(x, y) {
                 this.x = x;
                 this.y = y;
-                this.width = 60;
-                this.height = 40;
+                this.width = 40;
+                this.height = 25;
                 this.imagen = new Image();
                 this.imagen.src = 'hamburguesa.png';
             }
@@ -136,10 +137,10 @@
 
         class PapaFrita {
             constructor() {
-                this.x = Math.random() * (canvas.width - 15);
-                this.y = Math.random() * (canvas.height - 30);
-                this.width = 15;
-                this.height = 30;
+                this.x = Math.random() * (canvas.width - 10);
+                this.y = Math.random() * (canvas.height - 20);
+                this.width = 10;
+                this.height = 20;
                 this.visible = true;
             }
 
@@ -163,10 +164,10 @@
 
         class PowerUp {
             constructor() {
-                this.x = Math.random() * (canvas.width - 20) + 50;
-                this.y = Math.random() * (canvas.height - 20) + 50;
-                this.width = 20;
-                this.height = 20;
+                this.x = Math.random() * (canvas.width - 15) + 40;
+                this.y = Math.random() * (canvas.height - 15) + 40;
+                this.width = 15;
+                this.height = 15;
                 this.active = true;
             }
 
@@ -187,19 +188,19 @@
             }
         }
 
-        const hamburguesa = new Hamburguesa(canvas.width / 2 - 50, canvas.height / 2 - 30);
-        const papas = Array.from({ length: 5 }, () => new PapaFrita());
+        const hamburguesa = new Hamburguesa(canvas.width / 2 - 20, canvas.height / 2 - 15);
+        const papas = Array.from({ length: 4 }, () => new PapaFrita());
         const powerup = new PowerUp();
         const laberinto = crearLaberinto();
 
         function crearLaberinto() {
             return [
-                new Rectangulo(100, 100, 600, 20),
-                new Rectangulo(100, 200, 20, 300),
-                new Rectangulo(680, 100, 20, 300),
-                new Rectangulo(300, 400, 200, 20),
-                new Rectangulo(300, 200, 200, 20),
-                new Rectangulo(300, 100, 100, 70)
+                new Rectangulo(50, 50, 300, 10),
+                new Rectangulo(50, 150, 10, 200),
+                new Rectangulo(350, 50, 10, 200),
+                new Rectangulo(150, 250, 100, 10),
+                new Rectangulo(150, 100, 100, 10),
+                new Rectangulo(200, 50, 50, 35)
             ];
         }
 
@@ -216,7 +217,7 @@
                         if (papa.visible) {
                             juegoActivo = false;
                             alert("¡Perdiste!");
-                            document.location.reload();
+                            setTimeout(() => document.location.reload(), 3000);  // Espera de 3 segundos
                             break;
                         }
                     }
@@ -268,10 +269,10 @@
             clearInterval(touchInterval);
         }
 
-        document.getElementById("left").addEventListener("touchstart", () => iniciarMovimiento(-5, 0));
-        document.getElementById("right").addEventListener("touchstart", () => iniciarMovimiento(5, 0));
-        document.getElementById("up").addEventListener("touchstart", () => iniciarMovimiento(0, -5));
-        document.getElementById("down").addEventListener("touchstart", () => iniciarMovimiento(0, 5));
+        document.getElementById("left").addEventListener("touchstart", () => iniciarMovimiento(-4, 0));
+        document.getElementById("right").addEventListener("touchstart", () => iniciarMovimiento(4, 0));
+        document.getElementById("up").addEventListener("touchstart", () => iniciarMovimiento(0, -4));
+        document.getElementById("down").addEventListener("touchstart", () => iniciarMovimiento(0, 4));
 
         document.getElementById("left").addEventListener("touchend", detenerMovimiento);
         document.getElementById("right").addEventListener("touchend", detenerMovimiento);

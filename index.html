@@ -142,6 +142,7 @@
                 this.width = 10;
                 this.height = 20;
                 this.visible = true;
+                this.velocidad = 0.5; // Velocidad reducida
             }
 
             dibujar() {
@@ -151,14 +152,38 @@
                 }
             }
 
-            mover(hamburguesa) {
+            mover(hamburguesa, laberinto) {
                 if (this.visible) {
-                    if (this.x < hamburguesa.x) this.x += 1;
-                    else if (this.x > hamburguesa.x) this.x -= 1;
+                    const dirX = hamburguesa.x - this.x;
+                    const dirY = hamburguesa.y - this.y;
+                    const distancia = Math.sqrt(dirX ** 2 + dirY ** 2);
 
-                    if (this.y < hamburguesa.y) this.y += 1;
-                    else if (this.y > hamburguesa.y) this.y -= 1;
+                    // Normalizar la dirección
+                    const normX = dirX / distancia || 0;
+                    const normY = dirY / distancia || 0;
+
+                    // Moverse en la dirección de la hamburguesa
+                    this.x += normX * this.velocidad;
+                    this.y += normY * this.velocidad;
+
+                    // Comprobar colisiones con paredes
+                    for (const pared of laberinto) {
+                        if (this.colisionaCon(pared)) {
+                            // Retroceder al alejarse de la pared
+                            this.x -= normX * this.velocidad;
+                            this.y -= normY * this.velocidad;
+                        }
+                    }
                 }
+            }
+
+            colisionaCon(pared) {
+                return (
+                    this.x < pared.x + pared.width &&
+                    this.x + this.width > pared.x &&
+                    this.y < pared.y + pared.height &&
+                    this.y + this.height > pared.y
+                );
             }
         }
 
@@ -209,7 +234,7 @@
         function actualizar() {
             if (juegoActivo) {
                 for (const papa of papas) {
-                    papa.mover(hamburguesa);
+                    papa.mover(hamburguesa, laberinto);
                 }
 
                 for (const papa of papas) {
@@ -269,15 +294,14 @@
             clearInterval(touchInterval);
         }
 
-        document.getElementById("left").addEventListener("touchstart", () => iniciarMovimiento(-4, 0));
-        document.getElementById("right").addEventListener("touchstart", () => iniciarMovimiento(4, 0));
-        document.getElementById("up").addEventListener("touchstart", () => iniciarMovimiento(0, -4));
-        document.getElementById("down").addEventListener("touchstart", () => iniciarMovimiento(0, 4));
-
+        document.getElementById("left").addEventListener("touchstart", () => iniciarMovimiento(-5, 0));
+        document.getElementById("up").addEventListener("touchstart", () => iniciarMovimiento(0, -5));
+        document.getElementById("down").addEventListener("touchstart", () => iniciarMovimiento(0, 5));
+        document.getElementById("right").addEventListener("touchstart", () => iniciarMovimiento(5, 0));
         document.getElementById("left").addEventListener("touchend", detenerMovimiento);
-        document.getElementById("right").addEventListener("touchend", detenerMovimiento);
         document.getElementById("up").addEventListener("touchend", detenerMovimiento);
         document.getElementById("down").addEventListener("touchend", detenerMovimiento);
+        document.getElementById("right").addEventListener("touchend", detenerMovimiento);
 
         loop();
     </script>

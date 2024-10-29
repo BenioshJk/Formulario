@@ -98,6 +98,10 @@
                 if (!this.colisionaConParedes(nuevaX, nuevaY, laberinto)) {
                     this.x = nuevaX;
                     this.y = nuevaY;
+
+                    // Limitar hamburguesa a los márgenes del canvas
+                    this.x = Math.max(0, Math.min(this.x, canvas.width - this.width));
+                    this.y = Math.max(0, Math.min(this.y, canvas.height - this.height));
                 }
             }
 
@@ -283,15 +287,14 @@
         let touchInterval;
 
         function iniciarMovimiento(dx, dy) {
-            touchInterval = setInterval(() => {
-                hamburguesa.mover(dx, dy, laberinto);
-            }, 100);
+            touchInterval = setInterval(() => hamburguesa.mover(dx, dy, laberinto), 50);
         }
 
         function detenerMovimiento() {
             clearInterval(touchInterval);
         }
 
+        // Controles táctiles
         document.getElementById("left").addEventListener("touchstart", () => iniciarMovimiento(-5, 0));
         document.getElementById("up").addEventListener("touchstart", () => iniciarMovimiento(0, -5));
         document.getElementById("down").addEventListener("touchstart", () => iniciarMovimiento(0, 5));

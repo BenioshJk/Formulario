@@ -235,9 +235,13 @@
         }
 
         let juegoActivo = true;
+        let dx = 0;
+        let dy = 0;
 
         function actualizar() {
             if (juegoActivo) {
+                hamburguesa.mover(dx, dy, laberinto);
+
                 for (const papa of papas) {
                     papa.mover(hamburguesa, laberinto);
                 }
@@ -284,14 +288,14 @@
             }
         }
 
-        let touchInterval;
-
-        function iniciarMovimiento(dx, dy) {
-            touchInterval = setInterval(() => hamburguesa.mover(dx, dy, laberinto), 50);
+        function iniciarMovimiento(nuevoDx, nuevoDy) {
+            dx = nuevoDx;
+            dy = nuevoDy;
         }
 
         function detenerMovimiento() {
-            clearInterval(touchInterval);
+            dx = 0; 
+            dy = 0; 
         }
 
         // Controles táctiles

@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Hamburguesa vs Papas Fritas</title>
     <style>
-        /* Adaptación para pantallas de dispositivos móviles */
         body {
             margin: 0;
             display: flex;
@@ -27,12 +26,11 @@
 
         #canvas {
             width: 90vw;
-            height: 60vh; /* Espacio para controles */
+            height: 60vh; 
             background-color: #ffffff;
             border: 2px solid #000;
         }
 
-        /* Controles táctiles */
         .controls {
             display: flex;
             justify-content: center;
@@ -72,7 +70,6 @@
         const canvas = document.getElementById("canvas");
         const ctx = canvas.getContext("2d");
 
-        // Ajustar el tamaño del canvas al tamaño de la pantalla disponible
         function ajustarCanvas() {
             canvas.width = window.innerWidth * 0.9;
             canvas.height = window.innerHeight * 0.6;
@@ -142,7 +139,7 @@
                 this.width = 10;
                 this.height = 20;
                 this.visible = true;
-                this.velocidad = 0.5; // Velocidad reducida
+                this.velocidad = 0.8; 
             }
 
             dibujar() {
@@ -158,20 +155,24 @@
                     const dirY = hamburguesa.y - this.y;
                     const distancia = Math.sqrt(dirX ** 2 + dirY ** 2);
 
-                    // Normalizar la dirección
-                    const normX = dirX / distancia || 0;
-                    const normY = dirY / distancia || 0;
+                    if (distancia > 0) {
+                        const normX = dirX / distancia;
+                        const normY = dirY / distancia;
 
-                    // Moverse en la dirección de la hamburguesa
-                    this.x += normX * this.velocidad;
-                    this.y += normY * this.velocidad;
+                        this.x += normX * this.velocidad;
+                        this.y += normY * this.velocidad;
 
-                    // Comprobar colisiones con paredes
-                    for (const pared of laberinto) {
-                        if (this.colisionaCon(pared)) {
-                            // Retroceder al alejarse de la pared
-                            this.x -= normX * this.velocidad;
-                            this.y -= normY * this.velocidad;
+                        // Evitar que las papas se salgan del margen
+                        this.x = Math.max(0, Math.min(this.x, canvas.width - this.width));
+                        this.y = Math.max(0, Math.min(this.y, canvas.height - this.height));
+
+                        // Comprobar colisiones con paredes
+                        for (const pared of laberinto) {
+                            if (this.colisionaCon(pared)) {
+                                // Retroceder si colisiona
+                                this.x -= normX * this.velocidad;
+                                this.y -= normY * this.velocidad;
+                            }
                         }
                     }
                 }
@@ -242,7 +243,7 @@
                         if (papa.visible) {
                             juegoActivo = false;
                             alert("¡Perdiste!");
-                            setTimeout(() => document.location.reload(), 3000);  // Espera de 3 segundos
+                            setTimeout(() => document.location.reload(), 3000); 
                             break;
                         }
                     }
@@ -273,21 +274,18 @@
         }
 
         function dibujarLaberinto() {
-            ctx.fillStyle = "blue";
+            ctx.fillStyle = "black";
             for (const pared of laberinto) {
                 ctx.fillRect(pared.x, pared.y, pared.width, pared.height);
             }
         }
 
-        function loop() {
-            actualizar();
-            dibujar();
-            requestAnimationFrame(loop);
-        }
-
         let touchInterval;
+
         function iniciarMovimiento(dx, dy) {
-            touchInterval = setInterval(() => hamburguesa.mover(dx, dy, laberinto), 1000 / 60);
+            touchInterval = setInterval(() => {
+                hamburguesa.mover(dx, dy, laberinto);
+            }, 100);
         }
 
         function detenerMovimiento() {
@@ -302,6 +300,12 @@
         document.getElementById("up").addEventListener("touchend", detenerMovimiento);
         document.getElementById("down").addEventListener("touchend", detenerMovimiento);
         document.getElementById("right").addEventListener("touchend", detenerMovimiento);
+
+        function loop() {
+            actualizar();
+            dibujar();
+            requestAnimationFrame(loop);
+        }
 
         loop();
     </script>

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hamburguesa vs Papas Fritas</title>
     <style>
-        /* Estilos para el canvas y el diseño de pantalla completa */
+        /* Adaptación para pantallas de dispositivos móviles */
         body {
             margin: 0;
             display: flex;
@@ -18,23 +18,21 @@
         }
 
         #canvas {
-            width: 100vw;
-            height: 70vh; /* 70% de la pantalla para el juego */
-            border: 1px solid black;
+            width: 100%;
+            height: calc(100vh - 100px); /* Deja espacio para los controles */
             background-color: #ffffff;
         }
 
-        /* Estilo para los controles táctiles en la parte inferior */
+        /* Controles táctiles adaptados para móviles */
         .controls {
             display: flex;
             justify-content: center;
             gap: 10px;
             padding: 10px;
-            width: 100vw;
+            width: 100%;
             box-sizing: border-box;
         }
 
-        /* Estilo para los botones de dirección */
         .button {
             width: 60px;
             height: 60px;
@@ -53,7 +51,6 @@
 <body>
     <canvas id="canvas"></canvas>
     
-    <!-- Controles táctiles -->
     <div class="controls">
         <div class="button" id="left">⬅️</div>
         <div class="button" id="up">⬆️</div>
@@ -65,18 +62,22 @@
         const canvas = document.getElementById("canvas");
         const ctx = canvas.getContext("2d");
 
-        // Ajustar el tamaño del canvas para que ocupe toda la pantalla disponible
-        canvas.width = canvas.offsetWidth;
-        canvas.height = canvas.offsetHeight;
+        // Ajustar el tamaño del canvas a la pantalla
+        function ajustarCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight - 100;  // Resta el espacio para los controles
+        }
+        ajustarCanvas();
+        window.addEventListener('resize', ajustarCanvas);
 
         class Hamburguesa {
             constructor(x, y) {
                 this.x = x;
                 this.y = y;
-                this.width = 60;  // Ajusta la hamburguesa a un tamaño proporcional
+                this.width = 60;
                 this.height = 40;
                 this.imagen = new Image();
-                this.imagen.src = 'hamburguesa.png';  // Cambia 'hamburguesa.png' por el nombre de tu imagen
+                this.imagen.src = 'hamburguesa.png';
             }
 
             dibujar() {

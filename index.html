@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Hamburguesa vs Papas Fritas</title>
     <style>
         /* Adaptación para pantallas de dispositivos móviles */
@@ -10,20 +10,28 @@
             margin: 0;
             display: flex;
             flex-direction: column;
+            align-items: center;
+            background-color: #ffffff;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        #game-container {
+            display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            overflow: hidden;
-            background-color: #ffffff;
+            width: 100%;
+            height: 100%;
         }
 
         #canvas {
             width: 100%;
-            height: calc(100vh - 100px); /* Deja espacio para los controles */
+            height: calc(100vh - 120px); /* Espacio para controles */
             background-color: #ffffff;
         }
 
-        /* Controles táctiles adaptados para móviles */
+        /* Controles táctiles */
         .controls {
             display: flex;
             justify-content: center;
@@ -49,23 +57,24 @@
     </style>
 </head>
 <body>
-    <canvas id="canvas"></canvas>
-    
-    <div class="controls">
-        <div class="button" id="left">⬅️</div>
-        <div class="button" id="up">⬆️</div>
-        <div class="button" id="down">⬇️</div>
-        <div class="button" id="right">➡️</div>
+    <div id="game-container">
+        <canvas id="canvas"></canvas>
+        <div class="controls">
+            <div class="button" id="left">⬅️</div>
+            <div class="button" id="up">⬆️</div>
+            <div class="button" id="down">⬇️</div>
+            <div class="button" id="right">➡️</div>
+        </div>
     </div>
 
     <script>
         const canvas = document.getElementById("canvas");
         const ctx = canvas.getContext("2d");
 
-        // Ajustar el tamaño del canvas a la pantalla
+        // Ajustar el tamaño del canvas al tamaño de la pantalla disponible
         function ajustarCanvas() {
             canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight - 100;  // Resta el espacio para los controles
+            canvas.height = window.innerHeight - 120;  // Restamos el espacio para los controles
         }
         ajustarCanvas();
         window.addEventListener('resize', ajustarCanvas);

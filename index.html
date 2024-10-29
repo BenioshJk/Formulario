@@ -5,29 +5,78 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hamburguesa vs Papas Fritas</title>
     <style>
-        canvas {
+        /* Estilos para el canvas y el diseño de pantalla completa */
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            background-color: #ffffff;
+        }
+
+        #canvas {
+            width: 100vw;
+            height: 70vh; /* 70% de la pantalla para el juego */
             border: 1px solid black;
             background-color: #ffffff;
+        }
+
+        /* Estilo para los controles táctiles en la parte inferior */
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 10px;
+            width: 100vw;
+            box-sizing: border-box;
+        }
+
+        /* Estilo para los botones de dirección */
+        .button {
+            width: 60px;
+            height: 60px;
+            background-color: #444;
+            color: white;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            user-select: none;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <canvas id="canvas" width="800" height="600"></canvas>
+    <canvas id="canvas"></canvas>
+    
+    <!-- Controles táctiles -->
+    <div class="controls">
+        <div class="button" id="left">⬅️</div>
+        <div class="button" id="up">⬆️</div>
+        <div class="button" id="down">⬇️</div>
+        <div class="button" id="right">➡️</div>
+    </div>
+
     <script>
         const canvas = document.getElementById("canvas");
         const ctx = canvas.getContext("2d");
 
-        const ANCHO = canvas.width;
-        const ALTO = canvas.height;
+        // Ajustar el tamaño del canvas para que ocupe toda la pantalla disponible
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
 
         class Hamburguesa {
             constructor(x, y) {
                 this.x = x;
                 this.y = y;
-                this.width = 100; // Ancho de la hamburguesa
-                this.height = 60; // Alto de la hamburguesa
+                this.width = 60;  // Ajusta la hamburguesa a un tamaño proporcional
+                this.height = 40;
                 this.imagen = new Image();
-                this.imagen.src = 'hamburguesa.png'; // Cambia 'hamburguesa.png' por el nombre de tu imagen
+                this.imagen.src = 'hamburguesa.png';  // Cambia 'hamburguesa.png' por el nombre de tu imagen
             }
 
             dibujar() {
@@ -77,10 +126,10 @@
 
         class PapaFrita {
             constructor() {
-                this.x = Math.random() * (ANCHO - 15);
-                this.y = Math.random() * (ALTO - 30);
-                this.width = 15; // Ancho de la papa frita
-                this.height = 30; // Alto de la papa frita
+                this.x = Math.random() * (canvas.width - 15);
+                this.y = Math.random() * (canvas.height - 30);
+                this.width = 15;
+                this.height = 30;
                 this.visible = true;
             }
 
@@ -93,11 +142,10 @@
 
             mover(hamburguesa) {
                 if (this.visible) {
-                    // Movimiento hacia la hamburguesa
-                    if (this.x < hamburguesa.x) this.x += 1;  // Cambiar a velocidad más baja
+                    if (this.x < hamburguesa.x) this.x += 1;
                     else if (this.x > hamburguesa.x) this.x -= 1;
 
-                    if (this.y < hamburguesa.y) this.y += 1;  // Cambiar a velocidad más baja
+                    if (this.y < hamburguesa.y) this.y += 1;
                     else if (this.y > hamburguesa.y) this.y -= 1;
                 }
             }
@@ -105,8 +153,8 @@
 
         class PowerUp {
             constructor() {
-                this.x = Math.random() * (ANCHO - 20) + 50;
-                this.y = Math.random() * (ALTO - 20) + 50;
+                this.x = Math.random() * (canvas.width - 20) + 50;
+                this.y = Math.random() * (canvas.height - 20) + 50;
                 this.width = 20;
                 this.height = 20;
                 this.active = true;
@@ -129,7 +177,7 @@
             }
         }
 
-        const hamburguesa = new Hamburguesa(ANCHO / 2 - 50, ALTO / 2 - 30); // Centrar la hamburguesa
+        const hamburguesa = new Hamburguesa(canvas.width / 2 - 50, canvas.height / 2 - 30);
         const papas = Array.from({ length: 5 }, () => new PapaFrita());
         const powerup = new PowerUp();
         const laberinto = crearLaberinto();
@@ -141,42 +189,25 @@
                 new Rectangulo(680, 100, 20, 300),
                 new Rectangulo(300, 400, 200, 20),
                 new Rectangulo(300, 200, 200, 20),
-                new Rectangulo(300, 100, 100, 70),
-                // Asegúrate de que el spawn de la hamburguesa no choque con las paredes
+                new Rectangulo(300, 100, 100, 70)
             ];
         }
 
         let juegoActivo = true;
-        const keysPressed = {}; // Objeto para almacenar las teclas presionadas
 
         function actualizar() {
             if (juegoActivo) {
-                // Movimiento basado en las teclas presionadas
-                if (keysPressed["ArrowLeft"]) {
-                    hamburguesa.mover(-5, 0, laberinto);
-                }
-                if (keysPressed["ArrowRight"]) {
-                    hamburguesa.mover(5, 0, laberinto);
-                }
-                if (keysPressed["ArrowUp"]) {
-                    hamburguesa.mover(0, -5, laberinto);
-                }
-                if (keysPressed["ArrowDown"]) {
-                    hamburguesa.mover(0, 5, laberinto);
-                }
-
                 for (const papa of papas) {
                     papa.mover(hamburguesa);
                 }
 
                 for (const papa of papas) {
                     if (hamburguesa.colisionaCon(papa)) {
-                        // Solo se considera colisión si la papa está visible
                         if (papa.visible) {
                             juegoActivo = false;
                             alert("¡Perdiste!");
-                            document.location.reload(); // Reiniciar el juego
-                            break; // Salir del bucle después de perder
+                            document.location.reload();
+                            break;
                         }
                     }
                 }
@@ -190,13 +221,13 @@
                         for (const papa of papas) {
                             papa.visible = true;
                         }
-                    }, 3000); // Reaparecer las papas después de 3 segundos
+                    }, 3000);
                 }
             }
         }
 
         function dibujar() {
-            ctx.clearRect(0, 0, ANCHO, ALTO);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
             hamburguesa.dibujar();
             for (const papa of papas) {
                 papa.dibujar();
@@ -218,23 +249,24 @@
             requestAnimationFrame(loop);
         }
 
-        window.addEventListener("keydown", (event) => {
-            keysPressed[event.key] = true; // Marcar la tecla como presionada
-        });
+        let touchInterval;
+        function iniciarMovimiento(dx, dy) {
+            touchInterval = setInterval(() => hamburguesa.mover(dx, dy, laberinto), 1000 / 60);
+        }
 
-        window.addEventListener("keyup", (event) => {
-            keysPressed[event.key] = false; // Marcar la tecla como no presionada
-        });
+        function detenerMovimiento() {
+            clearInterval(touchInterval);
+        }
 
-        canvas.addEventListener("touchstart", (event) => {
-            const touchX = event.touches[0].clientX - canvas.offsetLeft;
-            const touchY = event.touches[0].clientY - canvas.offsetTop;
+        document.getElementById("left").addEventListener("touchstart", () => iniciarMovimiento(-5, 0));
+        document.getElementById("right").addEventListener("touchstart", () => iniciarMovimiento(5, 0));
+        document.getElementById("up").addEventListener("touchstart", () => iniciarMovimiento(0, -5));
+        document.getElementById("down").addEventListener("touchstart", () => iniciarMovimiento(0, 5));
 
-            const dx = touchX - (hamburguesa.x + hamburguesa.width / 2);
-            const dy = touchY - (hamburguesa.y + hamburguesa.height / 2);
-            const angle = Math.atan2(dy, dx);
-            hamburguesa.mover(Math.cos(angle) * 5, Math.sin(angle) * 5, laberinto);
-        });
+        document.getElementById("left").addEventListener("touchend", detenerMovimiento);
+        document.getElementById("right").addEventListener("touchend", detenerMovimiento);
+        document.getElementById("up").addEventListener("touchend", detenerMovimiento);
+        document.getElementById("down").addEventListener("touchend", detenerMovimiento);
 
         loop();
     </script>

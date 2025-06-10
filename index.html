@@ -1,320 +1,50 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Hamburguesa vs Papas Fritas</title>
-    <style>
-        body {
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background-color: #ffffff;
-            overflow: hidden;
-            height: 100vh;
-        }
-
-        #game-container {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            height: 100%;
-        }
-
-        #canvas {
-            width: 90vw;
-            height: 60vh; 
-            background-color: #ffffff;
-            border: 2px solid #000;
-        }
-
-        .controls {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            padding: 10px;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        .button {
-            width: 50px;
-            height: 50px;
-            background-color: #444;
-            color: white;
-            font-size: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 10px;
-            user-select: none;
-            cursor: pointer;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>P51 Mustang</title>
+  <link rel="stylesheet" href="estilos.css" />
 </head>
 <body>
-    <div id="game-container">
-        <canvas id="canvas"></canvas>
-        <div class="controls">
-            <div class="button" id="left">⬅️</div>
-            <div class="button" id="up">⬆️</div>
-            <div class="button" id="down">⬇️</div>
-            <div class="button" id="right">➡️</div>
-        </div>
+  <header>
+    <div class="menu-icon">☰</div>
+    <div class="logo">Buscador ▼</div>
+    <div class="icons">
+      <span class="icon">🏠</span>
+      <span class="icon">🔔</span>
+      <span class="icon">⋮</span>
+    </div>
+  </header>
+
+  <main>
+    <div class="contenido">
+      <div class="imagen-principal">
+        <img src="p51.png" alt="P51 Mustang" />
+      </div>
+      <div class="info">
+        <h1>P51</h1>
+        <p>
+          El P-51 Mustang es un caza monoplaza y monomotor de largo alcance.
+          Era conocido por su excelente maniobrabilidad y rendimiento a alta
+          altitud, especialmente con la instalación del motor Rolls-Royce Merlin.
+        </p>
+        <button>Añadir al Carrito</button>
+      </div>
     </div>
 
-    <script>
-        const canvas = document.getElementById("canvas");
-        const ctx = canvas.getContext("2d");
+    <div class="galeria">
+      <img src="thumb1.png" alt="Vista 1" />
+      <img src="thumb2.png" alt="Vista 2" />
+      <img src="thumb3.png" alt="Vista 3" />
+      <img src="thumb4.png" alt="Vista 4" />
+      <img src="thumb5.png" alt="Vista 5" />
+    </div>
+  </main>
 
-        function ajustarCanvas() {
-            canvas.width = window.innerWidth * 0.9;
-            canvas.height = window.innerHeight * 0.6;
-        }
-        ajustarCanvas();
-        window.addEventListener('resize', ajustarCanvas);
-
-        class Hamburguesa {
-            constructor(x, y) {
-                this.x = x;
-                this.y = y;
-                this.width = 40;
-                this.height = 25;
-                this.imagen = new Image();
-                this.imagen.src = 'hamburguesa.png';
-            }
-
-            dibujar() {
-                ctx.drawImage(this.imagen, this.x, this.y, this.width, this.height);
-            }
-
-            mover(dx, dy, laberinto) {
-                let nuevaX = this.x + dx;
-                let nuevaY = this.y + dy;
-
-                if (!this.colisionaConParedes(nuevaX, nuevaY, laberinto)) {
-                    this.x = nuevaX;
-                    this.y = nuevaY;
-
-                    // Limitar hamburguesa a los márgenes del canvas
-                    this.x = Math.max(0, Math.min(this.x, canvas.width - this.width));
-                    this.y = Math.max(0, Math.min(this.y, canvas.height - this.height));
-                }
-            }
-
-            colisionaCon(papa) {
-                return (
-                    this.x < papa.x + papa.width &&
-                    this.x + this.width > papa.x &&
-                    this.y < papa.y + papa.height &&
-                    this.y + this.height > papa.y
-                );
-            }
-
-            colisionaConPowerUp(powerup) {
-                return (
-                    this.x < powerup.x + powerup.width &&
-                    this.x + this.width > powerup.x &&
-                    this.y < powerup.y + powerup.height &&
-                    this.y + this.height > powerup.y
-                );
-            }
-
-            colisionaConParedes(nuevaX, nuevaY, laberinto) {
-                for (const pared of laberinto) {
-                    if (nuevaX < pared.x + pared.width &&
-                        nuevaX + this.width > pared.x &&
-                        nuevaY < pared.y + pared.height &&
-                        nuevaY + this.height > pared.y) {
-                        return true;
-                    }
-                }
-                return false;
-            }
-        }
-
-        class PapaFrita {
-            constructor() {
-                this.x = Math.random() * (canvas.width - 10);
-                this.y = Math.random() * (canvas.height - 20);
-                this.width = 10;
-                this.height = 20;
-                this.visible = true;
-                this.velocidad = 0.8; 
-            }
-
-            dibujar() {
-                if (this.visible) {
-                    ctx.fillStyle = "yellow";
-                    ctx.fillRect(this.x, this.y, this.width, this.height);
-                }
-            }
-
-            mover(hamburguesa, laberinto) {
-                if (this.visible) {
-                    const dirX = hamburguesa.x - this.x;
-                    const dirY = hamburguesa.y - this.y;
-                    const distancia = Math.sqrt(dirX ** 2 + dirY ** 2);
-
-                    if (distancia > 0) {
-                        const normX = dirX / distancia;
-                        const normY = dirY / distancia;
-
-                        this.x += normX * this.velocidad;
-                        this.y += normY * this.velocidad;
-
-                        // Evitar que las papas se salgan del margen
-                        this.x = Math.max(0, Math.min(this.x, canvas.width - this.width));
-                        this.y = Math.max(0, Math.min(this.y, canvas.height - this.height));
-
-                        // Comprobar colisiones con paredes
-                        for (const pared of laberinto) {
-                            if (this.colisionaCon(pared)) {
-                                // Retroceder si colisiona
-                                this.x -= normX * this.velocidad;
-                                this.y -= normY * this.velocidad;
-                            }
-                        }
-                    }
-                }
-            }
-
-            colisionaCon(pared) {
-                return (
-                    this.x < pared.x + pared.width &&
-                    this.x + this.width > pared.x &&
-                    this.y < pared.y + pared.height &&
-                    this.y + this.height > pared.y
-                );
-            }
-        }
-
-        class PowerUp {
-            constructor() {
-                this.x = Math.random() * (canvas.width - 15) + 40;
-                this.y = Math.random() * (canvas.height - 15) + 40;
-                this.width = 15;
-                this.height = 15;
-                this.active = true;
-            }
-
-            dibujar() {
-                if (this.active) {
-                    ctx.fillStyle = "red";
-                    ctx.fillRect(this.x, this.y, this.width, this.height);
-                }
-            }
-        }
-
-        class Rectangulo {
-            constructor(x, y, width, height) {
-                this.x = x;
-                this.y = y;
-                this.width = width;
-                this.height = height;
-            }
-        }
-
-        const hamburguesa = new Hamburguesa(canvas.width / 2 - 20, canvas.height / 2 - 15);
-        const papas = Array.from({ length: 4 }, () => new PapaFrita());
-        const powerup = new PowerUp();
-        const laberinto = crearLaberinto();
-
-        function crearLaberinto() {
-            return [
-                new Rectangulo(50, 50, 300, 10),
-                new Rectangulo(50, 150, 10, 200),
-                new Rectangulo(350, 50, 10, 200),
-                new Rectangulo(150, 250, 100, 10),
-                new Rectangulo(150, 100, 100, 10),
-                new Rectangulo(200, 50, 50, 35)
-            ];
-        }
-
-        let juegoActivo = true;
-        let dx = 0;
-        let dy = 0;
-
-        function actualizar() {
-            if (juegoActivo) {
-                hamburguesa.mover(dx, dy, laberinto);
-
-                for (const papa of papas) {
-                    papa.mover(hamburguesa, laberinto);
-                }
-
-                for (const papa of papas) {
-                    if (hamburguesa.colisionaCon(papa)) {
-                        if (papa.visible) {
-                            juegoActivo = false;
-                            alert("¡Perdiste!");
-                            setTimeout(() => document.location.reload(), 3000); 
-                            break;
-                        }
-                    }
-                }
-
-                if (powerup.active && hamburguesa.colisionaConPowerUp(powerup)) {
-                    powerup.active = false;
-                    for (const papa of papas) {
-                        papa.visible = false;
-                    }
-                    setTimeout(() => {
-                        for (const papa of papas) {
-                            papa.visible = true;
-                        }
-                    }, 3000);
-                }
-            }
-        }
-
-        function dibujar() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            hamburguesa.dibujar();
-            for (const papa of papas) {
-                papa.dibujar();
-            }
-            powerup.dibujar();
-            dibujarLaberinto();
-        }
-
-        function dibujarLaberinto() {
-            ctx.fillStyle = "black";
-            for (const pared of laberinto) {
-                ctx.fillRect(pared.x, pared.y, pared.width, pared.height);
-            }
-        }
-
-        function iniciarMovimiento(nuevoDx, nuevoDy) {
-            dx = nuevoDx;
-            dy = nuevoDy;
-        }
-
-        function detenerMovimiento() {
-            dx = 0; 
-            dy = 0; 
-        }
-
-        // Controles táctiles
-        document.getElementById("left").addEventListener("touchstart", () => iniciarMovimiento(-5, 0));
-        document.getElementById("up").addEventListener("touchstart", () => iniciarMovimiento(0, -5));
-        document.getElementById("down").addEventListener("touchstart", () => iniciarMovimiento(0, 5));
-        document.getElementById("right").addEventListener("touchstart", () => iniciarMovimiento(5, 0));
-        document.getElementById("left").addEventListener("touchend", detenerMovimiento);
-        document.getElementById("up").addEventListener("touchend", detenerMovimiento);
-        document.getElementById("down").addEventListener("touchend", detenerMovimiento);
-        document.getElementById("right").addEventListener("touchend", detenerMovimiento);
-
-        function loop() {
-            actualizar();
-            dibujar();
-            requestAnimationFrame(loop);
-        }
-
-        loop();
-    </script>
+  <footer>
+    <span>✈️</span>
+    <span>✈️</span>
+  </footer>
 </body>
 </html>

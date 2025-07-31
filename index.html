@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Formulario Robert López</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <h2>Formulario</h2>
+<form id="formulario">
+  <input type="text" name="nombres" placeholder="Nombres" required>
+  <input type="text" name="apellidos" placeholder="Apellidos" required>
+  <input type="text" name="cedula" placeholder="Cédula" required>
+  <input type="email" name="email" placeholder="Correo electrónico" required>
+  <input type="text" name="direccion" placeholder="Dirección" required>
+  <input type="tel" name="telefono" placeholder="Teléfono" required>
+  <label for="fechaNacimiento">Fecha de nacimiento</label>
+  <input type="date" id="fechaNacimiento" name="fechaNacimiento" required>
+  <select name="genero" required>
+    <option value="" disabled selected>Género</option>
+    <option value="Masculino">Masculino</option>
+    <option value="Femenino">Femenino</option>
+  </select>
+  <input type="submit" value="Enviar">
+</form>
+
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-firestore-compat.js"></script>
+
+<!-- Tu JavaScript externo -->
+<script src="app.js"></script>
+
+</body>
+</html>

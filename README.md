@@ -1,2 +1,0 @@
-# HamburguesaGame
-Exposición de vivi

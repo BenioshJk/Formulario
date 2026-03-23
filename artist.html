@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artists — Sukish.ENT</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div class="scanlines"></div>
+    
+    <nav class="main-nav" id="mainNav">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <svg viewBox="0 0 120 120" class="nav-logo-svg">
+                    <circle cx="60" cy="60" r="55" fill="none" stroke="#00ff88" stroke-width="3"/>
+                    <text x="60" y="78" text-anchor="middle" font-family="Orbitron" font-size="50" font-weight="900" fill="#00ff88">S</text>
+                </svg>
+                <span class="nav-brand">SUKISH.ENT</span>
+            </a>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">HOME</a>
+                <a href="artists.html" class="nav-link active">ARTISTS</a>
+                <a href="albums.html" class="nav-link">ALBUMS</a>
+                <a href="about.html" class="nav-link">ABOUT</a>
+            </div>
+            <button class="nav-menu-btn" id="menuBtn" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html" class="mobile-link">HOME</a>
+        <a href="artists.html" class="mobile-link active">ARTISTS</a>
+        <a href="albums.html" class="mobile-link">ALBUMS</a>
+        <a href="about.html" class="mobile-link">ABOUT</a>
+    </div>
+
+    <header class="page-header">
+        <div class="page-header-bg">
+            <div class="grid-overlay"></div>
+        </div>
+        <div class="page-header-content">
+            <span class="page-tag">// ROSTER</span>
+            <h1 class="page-title glitch" data-text="ARTISTS">ARTISTS</h1>
+            <p class="page-desc">Discover the talents that define Sukish.ENT</p>
+        </div>
+    </header>
+
+    <div class="filter-bar">
+        <div class="container">
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-filter="all">ALL</button>
+                <button class="filter-tab" data-filter="solo">SOLO</button>
+                <button class="filter-tab" data-filter="group">GROUPS</button>
+                <button class="filter-tab" data-filter="duo">DUOS</button>
+            </div>
+        </div>
+    </div>
+
+    <section class="section">
+        <div class="container">
+            <div class="artists-full-grid" id="artistsGrid"></div>
+        </div>
+    </section>
+
+    <footer class="main-footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <svg viewBox="0 0 120 120" class="footer-logo">
+                    <circle cx="60" cy="60" r="55" fill="none" stroke="#00ff88" stroke-width="3"/>
+                    <text x="60" y="78" text-anchor="middle" font-family="Orbitron" font-size="50" font-weight="900" fill="#00ff88">S</text>
+                </svg>
+                <p class="footer-tagline">The Future Pulse of Sound</p>
+            </div>
+            <div class="footer-links">
+                <h4>NAVIGATION</h4>
+                <a href="index.html">Home</a>
+                <a href="artists.html">Artists</a>
+                <a href="albums.html">Albums</a>
+                <a href="about.html">About</a>
+            </div>
+            <div class="footer-links">
+                <h4>CONNECT</h4>
+                <a href="#">YouTube</a>
+                <a href="#">Instagram</a>
+                <a href="#">Twitter/X</a>
+                <a href="#">TikTok</a>
+            </div>
+            <div class="footer-links">
+                <h4>COMPANY</h4>
+                <a href="#">Careers</a>
+                <a href="#">Press</a>
+                <a href="#">Contact</a>
+                <a href="#">Privacy</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 SUKISH.ENT. All rights reserved.</p>
+            <p class="footer-system">SYSTEM STATUS: <span class="status-online">ONLINE</span></p>
+        </div>
+    </footer>
+
+    <script src="/data.js"></script>
+    <script src="/main.js"></script>
+</body>
+</html>

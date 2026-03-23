@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sukish.ENT — The Future Pulse of Sound</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div class="scanlines"></div>
+    
+    <!-- LOADER -->
+    <div class="loader" id="loader">
+        <div class="loader-content">
+            <div class="loader-logo">
+                <svg viewBox="0 0 120 120" class="logo-svg">
+                    <defs>
+                        <linearGradient id="neonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#00ff88"/>
+                            <stop offset="100%" style="stop-color:#00ff41"/>
+                        </linearGradient>
+                    </defs>
+                    <circle cx="60" cy="60" r="55" fill="none" stroke="url(#neonGrad)" stroke-width="3"/>
+                    <circle cx="60" cy="60" r="48" fill="none" stroke="#00ff88" stroke-width="1" opacity="0.4"/>
+                    <text x="60" y="78" text-anchor="middle" font-family="Orbitron" font-size="50" font-weight="900" fill="#00ff88">S</text>
+                </svg>
+            </div>
+            <div class="loader-bar">
+                <div class="loader-progress"></div>
+            </div>
+            <p class="loader-text">INITIALIZING SYSTEM...</p>
+        </div>
+    </div>
+
+    <!-- NAVIGATION -->
+    <nav class="main-nav" id="mainNav">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <svg viewBox="0 0 120 120" class="nav-logo-svg">
+                    <circle cx="60" cy="60" r="55" fill="none" stroke="#00ff88" stroke-width="3"/>
+                    <text x="60" y="78" text-anchor="middle" font-family="Orbitron" font-size="50" font-weight="900" fill="#00ff88">S</text>
+                </svg>
+                <span class="nav-brand">SUKISH.ENT</span>
+            </a>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link active">HOME</a>
+                <a href="artist.html" class="nav-link">ARTISTS</a>
+                <a href="albums.html" class="nav-link">ALBUMS</a>
+                <a href="about.html" class="nav-link">ABOUT</a>
+            </div>
+            <button class="nav-menu-btn" id="menuBtn" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- MOBILE MENU -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html" class="mobile-link active">HOME</a>
+        <a href="artist.html" class="mobile-link">ARTISTS</a>
+        <a href="albums.html" class="mobile-link">ALBUMS</a>
+        <a href="about.html" class="mobile-link">ABOUT</a>
+    </div>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-bg">
+            <div class="grid-overlay"></div>
+            <div class="hero-particles" id="particles"></div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="blink">//</span> ENTERTAINMENT SYSTEM v2.0
+            </div>
+            <h1 class="hero-title glitch" data-text="SUKISH.ENT">SUKISH.ENT</h1>
+            <p class="hero-subtitle">The Future Pulse of Sound</p>
+            <p class="hero-desc">Pioneering the next generation of K-Pop since 2001. Where innovation meets artistry.</p>
+            <div class="hero-cta">
+                <a href="artist.html" class="btn btn-primary">
+                    <span class="btn-text">EXPLORE ARTISTS</span>
+                    <span class="btn-icon">&#8594;</span>
+                </a>
+                <a href="about.html" class="btn btn-secondary">
+                    <span class="btn-text">LEARN MORE</span>
+                </a>
+            </div>
+        </div>
+        <div class="hero-scroll">
+            <span>SCROLL</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- FEATURED ARTISTS -->
+    <section class="section featured-artists">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">// FEATURED</span>
+                <h2 class="section-title">OUR ARTISTS</h2>
+                <p class="section-desc">Meet the visionaries shaping the sound of tomorrow</p>
+            </div>
+            <div class="artists-grid" id="featuredArtists"></div>
+            <div class="section-cta">
+                <a href="artist.html" class="btn btn-outline">
+                    <span>VIEW ALL ARTISTS</span>
+                    <span class="btn-count">10</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- STATS -->
+    <section class="section stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-number" data-count="23">0</span>
+                    <span class="stat-label">YEARS ACTIVE</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" data-count="10">0</span>
+                    <span class="stat-label">ARTISTS</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" data-count="156">0</span>
+                    <span class="stat-label">ALBUMS RELEASED</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" data-count="89">0</span>
+                    <span class="stat-label">AWARDS WON</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- LATEST RELEASES -->
+    <section class="section releases-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">// NEW DROPS</span>
+                <h2 class="section-title">LATEST RELEASES</h2>
+            </div>
+            <div class="releases-grid" id="releasesSlider"></div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="main-footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <svg viewBox="0 0 120 120" class="footer-logo">
+                    <circle cx="60" cy="60" r="55" fill="none" stroke="#00ff88" stroke-width="3"/>
+                    <text x="60" y="78" text-anchor="middle" font-family="Orbitron" font-size="50" font-weight="900" fill="#00ff88">S</text>
+                </svg>
+                <p class="footer-tagline">The Future Pulse of Sound</p>
+            </div>
+            <div class="footer-links">
+                <h4>NAVIGATION</h4>
+                <a href="index.html">Home</a>
+                <a href="artist.html">Artists</a>
+                <a href="albums.html">Albums</a>
+                <a href="about.html">About</a>
+            </div>
+            <div class="footer-links">
+                <h4>CONNECT</h4>
+                <a href="#">YouTube</a>
+                <a href="#">Instagram</a>
+                <a href="#">Twitter/X</a>
+                <a href="#">TikTok</a>
+            </div>
+            <div class="footer-links">
+                <h4>COMPANY</h4>
+                <a href="#">Careers</a>
+                <a href="#">Press</a>
+                <a href="#">Contact</a>
+                <a href="#">Privacy</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 SUKISH.ENT. All rights reserved.</p>
+            <p class="footer-system">SYSTEM STATUS: <span class="status-online">ONLINE</span></p>
+        </div>
+    </footer>
+
+    <script src="/data.js"></script>
+    <script src="/main.js"></script>
+</body>
+</html>
